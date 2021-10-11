@@ -1,3 +1,4 @@
+import { AppConfig } from './../app.config';
 import { HuntTypeService } from './huntType.service';
 import { HunterTypeService } from './hunterType.service';
 import { WeaponService } from './weapon.service';
@@ -13,7 +14,7 @@ import { combineLatest } from 'rxjs';
 export class HuntService {
 
   huntsAll$ = this._http.get<Hunt[]>('api/hunts')
-    .pipe(tap(data => console.log('fetching Hunt[]', data)));
+    .pipe(tap(data => AppConfig.logData ? console.log('fetching Hunt[]', data) : ''));
 
   hunts$ = combineLatest([
     this.huntsAll$,

@@ -2,6 +2,8 @@ import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from '@angular/ma
 
 export class AppConfig {
 
+  static logData: boolean = false;
+
   static toolTipDefaults: MatTooltipDefaultOptions = {
     position: 'above',
     showDelay: 0,
