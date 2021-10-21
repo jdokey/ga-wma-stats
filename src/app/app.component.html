@@ -1,6 +1,10 @@
 <div class="main-content">
 
-  <h2>Georgia WMA Harvest Statistics</h2>
+  <header><h2>Georgia WMA Harvest Statistics</h2></header>
+
+  <div id="filters">
+    <app-filter></app-filter>
+  </div>
 
   <table mat-table [dataSource]="hunts$">
 
@@ -15,8 +19,9 @@
 
     <!-- Hunt Type Column -->
     <ng-container matColumnDef="huntType">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let h" class="right nudge-left" [ngClass]="{ 'border' : !h.isNotFirstWmaEntry }">
+      <th mat-header-cell *matHeaderCellDef
+        class="hunt-type-col"></th>
+      <td mat-cell *matCellDef="let h" class="right nudge-left hunt-type-col" [ngClass]="{ 'border' : !h.isNotFirstWmaEntry }">
         <span *ngIf="h.quota" matTooltip="Quota Hunt">Q{{ h.quota }}</span>
         <span *ngIf="!h.quota && h.isCheckIn" matTooltip="Check-in Hunt">(c)</span>
         {{ h.weaponName }}, <span *ngIf="h.huntType" matTooltip="{{ h.huntType | huntType }}">
@@ -27,8 +32,10 @@
 
     <!-- Start Date Column -->
     <ng-container matColumnDef="startDate">
-      <th mat-header-cell *matHeaderCellDef>Start Date</th>
-      <td mat-cell *matCellDef="let h" [ngClass]="{ 'border' : !h.isNotFirstWmaEntry }">{{ h.startDate | date : 'MM/dd/yyyy' }}</td>
+      <th mat-header-cell *matHeaderCellDef class="nudge-right">Start Date</th>
+      <td mat-cell *matCellDef="let h" class="nudge-right"
+        [ngClass]="{ 'border' : !h.isNotFirstWmaEntry }">
+          {{ h.startDate | date : 'MM/dd/yyyy' }}</td>
     </ng-container>
 
     <!-- End Date Column -->

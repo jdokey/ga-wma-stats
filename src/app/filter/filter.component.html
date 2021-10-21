@@ -1,0 +1,34 @@
+<div class="display-max">
+  <h3>
+    <mat-icon aria-hidden="false" aria-label="Example home icon">filter_alt</mat-icon>
+    Filter Hunts
+  </h3>
+  <div class="flex-wrap">
+
+    <div class="flex-child">
+      <mat-form-field appearance="fill">
+        <mat-label>WMA</mat-label>
+        <mat-select (selectionChange)="wmaChanged($event)">
+          <mat-option *ngFor="let w of wmas$ | async" [value]="w.id">
+            {{ w.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="flex-child">
+      Weapon
+    </div>
+
+    <div class="flex-child">
+      Season
+    </div>
+
+    <div class="flex-child">
+      Success Rate
+    </div>
+
+  </div>
+</div>
+
+

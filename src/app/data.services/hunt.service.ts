@@ -1,3 +1,4 @@
+import { FilterService } from './../services/filter.service';
 import { AppConfig } from './../app.config';
 import { HuntTypeService } from './huntType.service';
 import { HunterTypeService } from './hunterType.service';
@@ -22,7 +23,8 @@ export class HuntService {
     this._seasonService.seasons$,
     this._weaponService.weapons$,
     this._hunterTypeService.hunterTypes$,
-    this._huntTypeService.huntTypes$
+    this._huntTypeService.huntTypes$,
+    // this._filterService.selectedWmaChanges$
   ]).pipe(
     map(([hunts, wmas, seasons, weapons, hunterTypes, huntTypes]) =>
       hunts.map(hunt => ({
@@ -54,7 +56,8 @@ export class HuntService {
     private _seasonService: SeasonService,
     private _weaponService: WeaponService,
     private _hunterTypeService: HunterTypeService,
-    private _huntTypeService: HuntTypeService) { }
+    private _huntTypeService: HuntTypeService,
+    private _filterService: FilterService) { }
 
   private findSubcollectionValue(object: any, property: string, array: Wma[] | Season[]): string {
     return array.find(value => object[property] === value.id)?.name || 'Unknown';
@@ -72,6 +75,7 @@ export class HuntService {
     if (w1 > w2) return 1;
     if (s1 < s2) return -1;
     if (s1 > s2) return 1;
+
     return 0;
 
   }

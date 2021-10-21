@@ -12,16 +12,21 @@ import { HttpClientModule } from '@angular/common/http';
 
 import {MatTableModule} from '@angular/material/table';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatIconModule} from '@angular/material/icon';
+
 import { HuntTypePipe } from './pipes/hunt-type.pipe';
 import { TotalHarvestBreakdownPipe } from './pipes/total-harvest-breakdown.pipe';
 
 import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
+import { FilterComponent } from './filter/filter.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
     AppComponent,
     HuntTypePipe,
-    TotalHarvestBreakdownPipe
+    TotalHarvestBreakdownPipe,
+    FilterComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +35,9 @@ import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
     InMemoryWebApiModule.forRoot(AppData, { delay: 1000 }),
     HttpClientModule,
     MatTableModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatIconModule,
+    MatSelectModule
   ],
   providers: [
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: AppConfig.toolTipDefaults }

@@ -1,40 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .main-content {
   margin: 10px;
 }
 
-::ng-deep .tooltip {
-  font-size: 12px;
-  background-color: darkcyan;
+.filters-scrolling {
+  top: 70px;
+  position: sticky;
 }
 
-::ng-deep mat-tooltip-component{
-  & .mat-tooltip{
-      color: green; // your custom properties here.
-  }
+.nudge-left,
+td.nudge-left {
+  padding-right: 8px !important;
+}
+.nudge-right,
+td.nudge-right {
+  padding-left: 5px !important;
 }
 
-mat-tooltip-component .mat-tooltip.tooltip {
-  color: blue !important;
+.flex-wrap {
+  display: flex;
+  .flex-child { flex: 1; }
+  .flex-child:first-child { margin-right: 20px; }
 }
-
-.nudge-left, td.nudge-left { padding-right: 8px !important; }
-.nudge-right, td.nudge-right { padding-left: 5px !important; }
 
 table {
   width: 100%;
+  top: 55;
   th.mat-header-cell {
     font-size: 14px;
     font-weight: bold;
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
   }
-  td.right, th.right { text-align: right; }
+  td.right,
+  th.right {
+    text-align: right;
+  }
+  td.hunt-type-col,
+  th.hunt-type-col {
+    border-right: 1px solid #cccccc;
+  }
   td span.wmaName {
     font-weight: bold;
   }
-  td.border, th.border { border-top: 2px solid #333333; }
+  td.border,
+  th.border {
+    border-top: 2px solid #333333;
+  }
 }
