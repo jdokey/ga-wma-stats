@@ -1,8 +1,6 @@
-import { Hunt } from './model';
-
 import { Component } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { HuntService } from './data.services/hunt.service';
+
 
 @Component({
   selector: 'app-root',
@@ -10,7 +8,7 @@ import { HuntService } from './data.services/hunt.service';
 })
 export class AppComponent {
 
-  hunts$ = this._huntService.hunts$;
+  filteredHunts$ = this._huntService.filteredHunts$;
   displayColumns = ['wma', 'huntType', 'startDate', 'endDate', 'hunters', 'harvest', 'successRate']
 
   constructor(private _huntService: HuntService) { }

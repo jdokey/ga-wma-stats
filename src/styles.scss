@@ -1,16 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
 
+.color1 {color: #9c9b8d;}
+.color2 {color: #d5dbb1;}
+.color3 {color: #284566;}
+.color4 {color: #466b88;}
+.color5 {color: #a8bdca;}
 html,
 body {
   height: 100%;
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #466b88;
 }
 
 .main-content {
   margin: 10px;
+  h2 {
+    color: #FFFFFF;
+    margin: 8px;
+  }
+}
+
+.filters {
+  .mat-card {
+    margin-bottom: 8px;
+    .mat-card-subtitle {
+      margin-bottom: 0;
+    }
+    .title {
+      vertical-align: super;
+    }
+    .flex-wrap {
+      padding: 5px 0 0 5px;
+    }
+  }
 }
 
 .filters-scrolling {
@@ -20,26 +45,31 @@ body {
 
 .nudge-left,
 td.nudge-left {
-  padding-right: 8px !important;
+  padding-right: 10px !important;
 }
 .nudge-right,
 td.nudge-right {
-  padding-left: 5px !important;
+  padding-left: 10px !important;
 }
 
 .flex-wrap {
   display: flex;
-  .flex-child { flex: 1; }
-  .flex-child:first-child { margin-right: 20px; }
+  .flex-child {
+    flex: 1;
+  }
+  .flex-child:first-child {
+    margin-right: 20px;
+  }
 }
 
 table {
   width: 100%;
   top: 55;
   th.mat-header-cell {
-    font-size: 14px;
-    font-weight: bold;
-    background-color: #eeeeee;
+    font-size: 12px;
+    color: #666666;
+    letter-spacing: 2px;
+    background-color: #EEEEEE;
   }
   td.right,
   th.right {

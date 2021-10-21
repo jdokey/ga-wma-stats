@@ -6,7 +6,7 @@
     <app-filter></app-filter>
   </div>
 
-  <table mat-table [dataSource]="hunts$">
+  <table mat-table [dataSource]="filteredHunts$">
 
     <!-- WMA Column -->
     <ng-container matColumnDef="wma">

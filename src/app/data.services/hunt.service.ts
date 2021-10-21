@@ -1,33 +1,32 @@
-import { FilterService } from './../services/filter.service';
-import { AppConfig } from './../app.config';
-import { HuntTypeService } from './huntType.service';
-import { HunterTypeService } from './hunterType.service';
-import { WeaponService } from './weapon.service';
-import { SeasonService } from './season.service';
-import { Hunt, Season, Wma } from './../model';
-import { map, shareReplay, tap } from 'rxjs/operators';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { WmaService } from './wma.service';
 import { combineLatest } from 'rxjs';
+import { map, shareReplay, tap } from 'rxjs/operators';
+import { AppConfig } from './../app.config';
+import { Hunt, Season, Wma } from './../model';
+import { FilterService } from './../services/filter.service';
+import { HunterTypeService } from './hunterType.service';
+import { HuntTypeService } from './huntType.service';
+import { SeasonService } from './season.service';
+import { WeaponService } from './weapon.service';
+import { WmaService } from './wma.service';
 
 @Injectable({ providedIn: 'root' })
 export class HuntService {
 
-  huntsAll$ = this._http.get<Hunt[]>('api/hunts')
+  hunts$ = this._http.get<Hunt[]>('api/hunts')
     .pipe(tap(data => AppConfig.logData ? console.log('fetching Hunt[]', data) : ''));
 
-  hunts$ = combineLatest([
-    this.huntsAll$,
+  huntsWithAnxData$ = combineLatest([
+    this.hunts$,
     this._wmaService.wmas$,
     this._seasonService.seasons$,
     this._weaponService.weapons$,
     this._hunterTypeService.hunterTypes$,
     this._huntTypeService.huntTypes$,
-    // this._filterService.selectedWmaChanges$
   ]).pipe(
     map(([hunts, wmas, seasons, weapons, hunterTypes, huntTypes]) =>
-      hunts.map(hunt => ({
+      hunts.map((hunt: Hunt) => ({
         ...hunt,
         wmaName: this.findSubcollectionValue(hunt, 'wma', wmas),
         // wmas.find(value => hunt.wma === value.id)?.name || 'Unknown',
@@ -39,15 +38,23 @@ export class HuntService {
       }) as Hunt)
     ),
     // Sort by wmaName, then by startDate ...
-    map(hunts => hunts.sort((a,b) => this.sortHunts(a, b))),
-    // map(hunts => hunts.sort((a: any, b: any) => a.wmaName < b.wmaName ? -1 : a.wmaName > b.wmaName ? 1 : 0)),
+    map(hunts => hunts.sort((a: Hunt, b: Hunt) => this.sortHunts(a, b))),
     // Set isNotFirstWmaEntry property. This indicates when/when not to render the wma name field in the
     // "WMA" column ...
-    map(hunts => hunts.map((value, index, array) => ({
-      ...value,
-      isNotFirstWmaEntry: array[index - 1] ? value.wma === array[index - 1].wma : false
+    map(hunts => hunts.map((hunt: { wma: any; }, index: number, array: { wma: any; }[]) => ({
+      ...hunt,
+      isNotFirstWmaEntry: array[index - 1] ? hunt.wma === array[index - 1].wma : false
     }))),
     shareReplay(1)
+  );
+
+  filteredHunts$ = combineLatest([
+    this.huntsWithAnxData$,
+    this._filterService.selectedWmaChanges$
+  ]).pipe(
+    map(([hunts, selectedWma]) =>
+      hunts.filter(hunt => selectedWma !== 0 ? hunt.wma === selectedWma : true)
+    )
   );
 
   constructor(
