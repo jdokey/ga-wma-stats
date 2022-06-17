@@ -4,7 +4,7 @@ import { FilterService } from './../services/filter.service';
 import { WmaService } from './../data.services/wma.service';
 import { Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { HuntFilter } from '../model';
 
 @Component({
@@ -13,14 +13,14 @@ import { HuntFilter } from '../model';
 })
 export class FilterComponent implements OnInit {
 
-  filterForm!: FormGroup;
+  filterForm!: UntypedFormGroup;
 
   wmas$ = this._wmaService.wmas$;
   seasons$ = this._seasonService.seasons$;
   weapons$ = this._weaponService.weapons$;
 
   constructor(
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _wmaService: WmaService,
     private _seasonService: SeasonService,
     private _weaponService: WeaponService,
