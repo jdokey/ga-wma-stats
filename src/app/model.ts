@@ -1,10 +1,10 @@
 export interface Hunt {
   id: number;
-  season: number | null;
+  season: number;
   seasonYear?: string;
-  wma: number | null;
+  wma: number;
   wmaName?: string | null;
-  weapon: number | null;
+  weapon: number;
   weaponName?: string;
   huntType: number | null;
   huntTypeName?: string;
@@ -51,6 +51,12 @@ export interface HuntType {
 export interface HunterType {
   id: number;
   name: string;
+}
+
+export interface HuntFilter {
+  wma?: number | null;
+  season?: number | null;
+  weapon?: number | null;
 }
 
 

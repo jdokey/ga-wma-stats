@@ -1,16 +1,19 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { HuntFilter } from "../model";
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {
 
-  private selectedWma = new BehaviorSubject<number>(0);
-  selectedWmaChanges$ = this.selectedWma.asObservable();
+  initFilterValue: HuntFilter = {};
+  selectedFiltersSubject = new BehaviorSubject<HuntFilter>(this.initFilterValue);
+  selectedFilters$ = this.selectedFiltersSubject.asObservable();
 
   constructor() {}
 
-  selectedWmaChanged(wmaId: number) {
-    this.selectedWma.next(wmaId);
+  selectedFiltersChanged(filters: HuntFilter) {
+    // console.log('selectedFiltersChanged', filters);
+    this.selectedFiltersSubject.next(filters);
   }
 
 }

@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { combineLatest } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
 import { AppConfig } from './../app.config';
-import { Hunt, Season, Wma } from './../model';
+import { Hunt, Season, Wma, HuntFilter } from './../model';
 import { FilterService } from './../services/filter.service';
 import { HunterTypeService } from './hunterType.service';
 import { HuntTypeService } from './huntType.service';
@@ -29,7 +29,6 @@ export class HuntService {
       hunts.map((hunt: Hunt) => ({
         ...hunt,
         wmaName: this.findSubcollectionValue(hunt, 'wma', wmas),
-        // wmas.find(value => hunt.wma === value.id)?.name || 'Unknown',
         seasonYear: this.findSubcollectionValue(hunt, 'season', seasons),
         weaponName: this.findSubcollectionValue(hunt, 'weapon', weapons),
         hunterTypeName: this.findSubcollectionValue(hunt, 'hunterType', hunterTypes),
@@ -39,22 +38,40 @@ export class HuntService {
     ),
     // Sort by wmaName, then by startDate ...
     map(hunts => hunts.sort((a: Hunt, b: Hunt) => this.sortHunts(a, b))),
-    // Set isNotFirstWmaEntry property. This indicates when/when not to render the wma name field in the
-    // "WMA" column ...
+    // Set isNotFirstWmaEntry property. This indicates when/when not to render the wma name field in the "WMA" column ...
     map(hunts => hunts.map((hunt: { wma: any; }, index: number, array: { wma: any; }[]) => ({
       ...hunt,
       isNotFirstWmaEntry: array[index - 1] ? hunt.wma === array[index - 1].wma : false
-    }))),
-    shareReplay(1)
+    }) as Hunt)),
+    shareReplay(1),
+    // tap(data => console.log(data))
   );
 
   filteredHunts$ = combineLatest([
     this.huntsWithAnxData$,
-    this._filterService.selectedWmaChanges$
+    this._filterService.selectedFilters$
   ]).pipe(
-    map(([hunts, selectedWma]) =>
-      hunts.filter(hunt => selectedWma !== 0 ? hunt.wma === selectedWma : true)
-    )
+    // tap(data => console.log(data)),
+    map(([hunts, selectedFilters]) =>
+      hunts.filter((hunt) => {
+        if (Object.keys(selectedFilters).length > 0) {
+          for (let i in selectedFilters) {
+            if (hunt[i as keyof Hunt] !== selectedFilters[i as keyof HuntFilter]) {
+              return false;
+            }
+          }
+        } else {
+          return true;
+        }
+        return true;
+      })
+    ),
+    // Set isNotFirstWmaEntry property. This indicates when/when not to render the wma name field in the "WMA" column ...
+    map(hunts => hunts.map((hunt: { wma: any; }, index: number, array: { wma: any; }[]) => ({
+      ...hunt,
+      isNotFirstWmaEntry: array[index - 1] ? hunt.wma === array[index - 1].wma : false
+    }) as Hunt)),
+    tap(data => console.log('filteredHunts$', data))
   );
 
   constructor(

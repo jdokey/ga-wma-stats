@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { HuntService } from './data.services/hunt.service';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
