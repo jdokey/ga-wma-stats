@@ -8,12 +8,12 @@ export interface Hunt {
   weaponName?: string;
   huntType: number | null;
   huntTypeName?: string;
-  hunterType: number | null;
+  hunterType: number | null | string;
   hunterTypeName?: string;
   quota?: number | null;
   isCheckIn: boolean;
-  startDate: number | 0;
-  endDate: number | 0;
+  startDate: number | 0 | string;
+  endDate: number | 0 | null | string;
   hunterCount: number;
   bucks: number | 0;
   does: number | 0;
@@ -45,7 +45,7 @@ export interface Weapon {
 export interface HuntType {
   id: number;
   name: string;
-  descr: string;
+  descr?: string;
 }
 
 export interface HunterType {
