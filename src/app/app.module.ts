@@ -19,6 +19,7 @@ import { AppConfig } from './app.config';
 import { FilterComponent } from './filter/filter.component';
 import { HuntTypePipe } from './pipes/hunt-type.pipe';
 import { TotalHarvestBreakdownPipe } from './pipes/total-harvest-breakdown.pipe';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { TotalHarvestBreakdownPipe } from './pipes/total-harvest-breakdown.pipe'
     MatCardModule,
     MatDividerModule,
     MatButtonModule,
-    MatSliderModule
+    MatSliderModule,
+    MatSlideToggleModule
   ],
   providers: [
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: AppConfig.toolTipDefaults }
