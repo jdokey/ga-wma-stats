@@ -64,6 +64,14 @@ mat-card.filters {
     margin: 11px 10px 12px 16px;
     max-width: 284px;
   }
+  .mat-hint {
+    .clearField {
+      font-size: 12px;
+      font-weight: bold;
+      color: #284566;
+      cursor: pointer !important;
+    }
+  }
 }
 
 // .filters-scrolling {
