@@ -54,24 +54,26 @@ export class HuntService {
     // tap(([hunts, selectedFilters]) => console.log(selectedFilters)),
     map(([hunts, selectedFilters]) =>
       hunts.filter((hunt) => {
-        if (Object.keys(selectedFilters).length > 0) {
-          const filteredFilters = Object.entries(selectedFilters).filter(([key, value]) => value !== null);
-          const filtersObj = Object.fromEntries(filteredFilters);
+        const nonNullFilters = Object.entries(selectedFilters).filter(([key, value]) => value !== null);
+        if (nonNullFilters.length > 0) {
+          const filtersObj = Object.fromEntries(nonNullFilters);
           let expr: string = '';
           for (const [key, value] of Object.entries(filtersObj)) {
             if (key === 'successRate') {
               expr += `hunt['${key}'] >= ${value} && `;
+            } else if (key === 'quota' || key === 'isCheckIn') {
+              if (value) {
+                expr += `hunt['${key}'] == true && `;
+              }
             } else {
               expr += `hunt['${key}'] === ${value} && `;
             }
           }
           // console.log(expr);
           return eval(expr.substring(0, expr.length - 3));
-        }
-        if (Object.keys(selectedFilters).length === 0) {
+        } else {
           return true;
         }
-        return false;
       })
     ),
     // Set isNotFirstWmaEntry property. This indicates when/when not to render the wma name field in the "WMA" column ...
