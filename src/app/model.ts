@@ -57,6 +57,8 @@ export interface HuntFilter {
   wma?: number | null;
   season?: number | null;
   weapon?: number | null;
+  successRate?: string | null;
 }
+
 
 
