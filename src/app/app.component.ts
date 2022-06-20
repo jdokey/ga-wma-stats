@@ -8,7 +8,7 @@ import { HuntService } from './data.services/hunt.service';
 export class AppComponent {
 
   filteredHunts$ = this._huntService.filteredHunts$;
-  displayColumns = ['wma', 'huntType', 'startDate', 'endDate', 'hunters', 'harvest', 'successRate']
+  displayColumns = ['wma', 'huntType', 'dates', 'hunters', 'harvest', 'successRate']
 
   constructor(private _huntService: HuntService) { }
 

@@ -80,6 +80,11 @@ td.nudge-right {
   padding-left: 10px !important;
 }
 
+.text-center {
+  text-align: center;
+}
+
+
 table {
   width: 100%;
   top: 55;
@@ -92,6 +97,10 @@ table {
   td.right,
   th.right {
     text-align: right;
+  }
+  td.left,
+  th.left {
+    text-align: left;
   }
   td.hunt-type-col,
   th.hunt-type-col {
