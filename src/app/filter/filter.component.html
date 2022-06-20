@@ -3,6 +3,7 @@
   <mat-card-content>
     <form [formGroup]="filterForm">
       <div class="clear" *ngIf="filterForm.dirty">
+        <!-- {{ filterForm.value | json }} -->
         <button mat-raised-button (click)="clearFilters()">Clear All Filters</button>
       </div>
       <div class="flex-wrap">
@@ -14,6 +15,9 @@
                 {{ w.name }}
               </mat-option>
             </mat-select>
+            <mat-hint><a *ngIf="filterForm.value.wma"
+              class="clearField"
+              (click)="clearFilter('wma')">Clear</a></mat-hint>
           </mat-form-field>
         </div>
         <div class="flex-child">
@@ -24,6 +28,9 @@
                 {{ s.name }}
               </mat-option>
             </mat-select>
+            <mat-hint><a *ngIf="filterForm.value.season"
+              class="clearField"
+              (click)="clearFilter('season')">Clear</a></mat-hint>
           </mat-form-field>
         </div>
         <div class="flex-child">
@@ -34,6 +41,9 @@
                 {{ w.name }}
               </mat-option>
             </mat-select>
+            <mat-hint><a *ngIf="filterForm.value.weapon"
+              class="clearField"
+              (click)="clearFilter('weapon')">Clear</a></mat-hint>
           </mat-form-field>
         </div>
       </div>
@@ -45,6 +55,16 @@
           <mat-slider formControlName="successRate" [max]="100" [min]="0"
             [step]="25" [thumbLabel]="true" tickInterval="25">
           </mat-slider>
+        </div>
+        <div class="flex-child">
+          <div>
+            <mat-slide-toggle formControlName="quota"
+              (change)="toggleChange('quota', $event)">Quota Hunt</mat-slide-toggle>
+          </div>
+          <div>
+            <mat-slide-toggle formControlName="isCheckIn"
+              (change)="toggleChange('isCheckIn', $event)">Check-in Hunt</mat-slide-toggle>
+          </div>
         </div>
       </div>
     </form>
