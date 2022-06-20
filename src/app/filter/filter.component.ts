@@ -1,10 +1,10 @@
+import { AppConfig } from './../app.config';
 import { WeaponService } from './../data.services/weapon.service';
 import { SeasonService } from './../data.services/season.service';
 import { FilterService } from './../services/filter.service';
 import { WmaService } from './../data.services/wma.service';
 import { Component, OnInit } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import { HuntFilter } from '../model';
 
 @Component({
@@ -13,14 +13,14 @@ import { HuntFilter } from '../model';
 })
 export class FilterComponent implements OnInit {
 
-  filterForm!: UntypedFormGroup;
+  filterForm!: FormGroup;
 
   wmas$ = this._wmaService.wmas$;
   seasons$ = this._seasonService.seasons$;
   weapons$ = this._weaponService.weapons$;
 
   constructor(
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: NonNullableFormBuilder,
     private _wmaService: WmaService,
     private _seasonService: SeasonService,
     private _weaponService: WeaponService,
@@ -29,17 +29,13 @@ export class FilterComponent implements OnInit {
   ngOnInit(): void {
 
     this.filterForm = this._formBuilder.group({
-      wma: [null],
-      season: [null],
-      weapon: [null]
+      wma: [null as string | null],
+      season: [null as string | null],
+      weapon: [null as string | null],
+      successRate: [null as string | null]
     });
 
     this.filterForm.valueChanges.subscribe(filterValues => {
-      for (let key in filterValues) {
-        if (filterValues[key] === null) {
-          delete filterValues[key];
-        }
-      }
       this.filtersChanged(filterValues);
     });
 
@@ -47,6 +43,11 @@ export class FilterComponent implements OnInit {
 
   filtersChanged(value: HuntFilter) {
     this._filterService.selectedFiltersChanged(value);
+  }
+
+  clearFilters() {
+    this.filtersChanged({});
+    this.filterForm.reset({}, { emitEvent: false });
   }
 
 }
