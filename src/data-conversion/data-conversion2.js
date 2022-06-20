@@ -1,3 +1,114 @@
+/**
+ *
+ * Data Import/Update ...
+ *
+ * 1) CSV --> JSON
+ * 2) Run data-cleanup script
+ * 3) Point this script to raw JSON file and run
+ * 4) Cleanup any other anomolies manually, easiest
+ * to check the filter selects for bogus values
+ *
+ * Remove these manually ...
+ * [
+  {
+    season: '2018-2019',
+    wma: 'Tuckahoe',
+    weapon: '',
+    huntType: '',
+    hunterType: '',
+    quota: null,
+    isCheckIn: null,
+    startDate: '',
+    endDate: '',
+    hunterCount: null,
+    bucks: 16,
+    does: 22,
+    boars: null,
+    sows: null,
+    totalHarvest: 38,
+    huntDuration: 1,
+    huntCount: 1
+  },
+  {
+    season: '2018-2019',
+    wma: 'Zahnd NA',
+    weapon: '',
+    huntType: '',
+    hunterType: '',
+    quota: null,
+    isCheckIn: null,
+    startDate: '',
+    endDate: '',
+    hunterCount: null,
+    bucks: 7,
+    does: 6,
+    boars: null,
+    sows: null,
+    totalHarvest: 13,
+    huntDuration: 1,
+    huntCount: 1
+  },
+  {
+    season: '',
+    wma: '',
+    weapon: '',
+    huntType: '',
+    hunterType: '',
+    quota: null,
+    isCheckIn: null,
+    startDate: '',
+    endDate: '',
+    hunterCount: null,
+    bucks: null,
+    does: null,
+    boars: null,
+    sows: null,
+    totalHarvest: null,
+    huntDuration: null,
+    huntCount: null
+  },
+  {
+    "season": "",
+    "wma": "",
+    "weapon": "",
+    "huntType": "",
+    "hunterType": "",
+    "quota": null,
+    "isCheckIn": null,
+    "startDate": "",
+    "endDate": "",
+    "hunterCount": null,
+    "bucks": null,
+    "does": null,
+    "boars": null,
+    "sows": null,
+    "totalHarvest": null,
+    "huntDuration": null,
+    "huntCount": null
+  },
+  {
+    "season": "",
+    "wma": "",
+    "weapon": "",
+    "huntType": "",
+    "hunterType": "",
+    "quota": null,
+    "isCheckIn": null,
+    "startDate": "",
+    "endDate": "",
+    "hunterCount": null,
+    "bucks": null,
+    "does": null,
+    "boars": null,
+    "sows": null,
+    "totalHarvest": null,
+    "huntDuration": null,
+    "huntCount": null
+  }
+]
+ *
+ */
+
 function dateNotValid(d) {
   const value = Date.parse(d);
   return isNaN(value);
@@ -11,7 +122,7 @@ function capFirstLetter(string) {
 const fs = require('fs');
 // Set limit
 const resultsLimit = null;
-const rawdata = fs.readFileSync('raw-hunt-data2.json'),
+const rawdata = fs.readFileSync('raw-hunt-data4.json'),
   dataDir = '../app/data',
   subCollections = ['season', 'wma', 'weapon', 'huntType', 'hunterType'],
   countProperties = ['bucks', 'does', 'boars', 'sows', 'quota', 'hunterCount'];
@@ -22,14 +133,12 @@ if (resultsLimit !== null) {
   hunts = hunts.filter((item, index) => index < resultsLimit);
 }
 
-console.log(`####################################################
-Processing ${hunts.length} Hunts ...`);
-
 // Quick cleanup
 hunts.forEach(item => {
   if (item.weapon === 'Primative') item.weapon = 'Primitive';
   if (item.weapon === 'firearms' || item.weapon === 'FIrearms') item.weapon = 'Firearms';
   if (item.weapon === 'archery') item.weapon = 'Archery';
+  if (item.weapon === 'Archery ') item.weapon = 'Archery';
   if (item.hunterType === 'general') item.hunterType = 'General';
   if (item.wma === 'Alexander WMA') item.wma = 'Alexander';
   if (item.wma === 'Allatoona WMA') item.wma = 'Allatoona';
@@ -38,8 +147,11 @@ hunts.forEach(item => {
   if (item.isCheckIn === '') item.isCheckIn = false;
 });
 
-let removedByDateCount = 0,
-  remmovedByWeaponCount = 0;
+console.log(`####################################################
+Processing ${hunts.length} Hunts ...`);
+
+let removedCount = 0;
+
 // Iterate all Hunts
 for (let [i, hunt] of hunts.entries()) {
   //  - Set IDs
@@ -53,33 +165,28 @@ for (let [i, hunt] of hunts.entries()) {
   });
 
   //  - Remove entries with missing dates
-  if (!(dateNotValid(hunt.startDate) || dateNotValid(hunt.endDate))) {
+  if (((dateNotValid(hunt.startDate) || dateNotValid(hunt.endDate)) ||
+        (hunt.weapon.replace(/^\s+|\s+$/gm,'') == '' || hunt.weapon === null) ||
+        (hunt.season.length < 9 || hunt.season.replace(/^\s+|\s+$/gm,'') == ''))) {
+    // Hunts with invalid start/end dates, throw out ...
+    hunts.splice(i, 1);
+    removedCount++;
+  } else {
     // Convert date properties to UNIX timestamp (milliseconds) ...
     hunt.startDate = Date.parse(hunt.startDate);
     hunt.endDate = Date.parse(hunt.endDate);
-  } else { // Hunts with invalid start/end dates, throw out ...
-    hunts.splice(i, 1);
-    removedByDateCount++;
-  }
-
-  if (hunt.weapon.trim() === '' || hunt.weapon === null) {
-    hunts.splice(i, 1);
-    remmovedByWeaponCount++;
   }
 
 }
 
-if (removedByDateCount > 0) {
+if (removedCount > 0) {
   console.log(`---------------------------------------------------
-*** Removed ${removedByDateCount} Hunt(s) because of invalid start or end date. ***`);
+*** Removed ${removedCount} Hunt(s) because of invalid start or end date, or missing weapon. ***`);
 }
 
-if (remmovedByWeaponCount > 0) {
-  console.log(`---------------------------------------------------
-*** Removed ${remmovedByWeaponCount} Hunt(s) because of missing weapon. ***`);
-}
+console.log(hunts.filter(hunt => hunt.weapon === ''));
 
-// Parse out unique subcollection values from Hunts...
+// Parse out unique subcollection values from Hunts ...
 let subCollectionData = [];
 for (let sub of subCollections) {
   subCollectionData.push((() => {
@@ -105,14 +212,10 @@ for (let [huntIndex, hunt] of hunts.entries()) {
 console.log(`Finished processing ${hunts.length} Hunts!`);
 
 // Create huntData data file ...
-const huntDataContent = `import { Hunt } from './../model';
-export class HuntData {
-static huntData: Hunt[] = ${JSON.stringify(hunts)}}`;
-
-fs.writeFileSync(`${dataDir}/huntData.ts`, huntDataContent);
+fs.writeFileSync(`./../app/data/huntData.json`, JSON.stringify(hunts));
 
 console.log(`####################################################
-Saved huntData file to: ${dataDir}/huntData.ts`);
+Saved hunt data to: /app/data/huntData.json`);
 
 // Create each of the subCollection data files ...
 for (let [i, sub] of subCollections.entries()) {
