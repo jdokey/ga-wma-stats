@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { combineLatest } from 'rxjs';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { map, shareReplay, tap, filter } from 'rxjs/operators';
 import { AppConfig } from './../app.config';
 import { Hunt, Season, Wma, HuntFilter } from './../model';
 import { FilterService } from './../services/filter.service';
@@ -51,19 +51,27 @@ export class HuntService {
     this.huntsWithAnxData$,
     this._filterService.selectedFilters$
   ]).pipe(
-    // tap(data => console.log(data)),
+    // tap(([hunts, selectedFilters]) => console.log(selectedFilters)),
     map(([hunts, selectedFilters]) =>
       hunts.filter((hunt) => {
         if (Object.keys(selectedFilters).length > 0) {
-          for (let i in selectedFilters) {
-            if (hunt[i as keyof Hunt] !== selectedFilters[i as keyof HuntFilter]) {
-              return false;
+          const filteredFilters = Object.entries(selectedFilters).filter(([key, value]) => value !== null);
+          const filtersObj = Object.fromEntries(filteredFilters);
+          let expr: string = '';
+          for (const [key, value] of Object.entries(filtersObj)) {
+            if (key === 'successRate') {
+              expr += `hunt['${key}'] >= ${value} && `;
+            } else {
+              expr += `hunt['${key}'] === ${value} && `;
             }
           }
-        } else {
+          // console.log(expr);
+          return eval(expr.substring(0, expr.length - 3));
+        }
+        if (Object.keys(selectedFilters).length === 0) {
           return true;
         }
-        return true;
+        return false;
       })
     ),
     // Set isNotFirstWmaEntry property. This indicates when/when not to render the wma name field in the "WMA" column ...
@@ -71,7 +79,7 @@ export class HuntService {
       ...hunt,
       isNotFirstWmaEntry: array[index - 1] ? hunt.wma === array[index - 1].wma : false
     }) as Hunt)),
-    tap(data => console.log('filteredHunts$', data))
+    tap(data => console.log('filteredHunts$ length:', data.length))
   );
 
   constructor(
@@ -82,6 +90,8 @@ export class HuntService {
     private _hunterTypeService: HunterTypeService,
     private _huntTypeService: HuntTypeService,
     private _filterService: FilterService) { }
+
+
 
   private findSubcollectionValue(object: any, property: string, array: Wma[] | Season[]): string {
     return array.find(value => object[property] === value.id)?.name || 'Unknown';
