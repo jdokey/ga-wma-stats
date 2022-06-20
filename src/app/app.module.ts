@@ -1,11 +1,13 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -38,7 +40,9 @@ import { TotalHarvestBreakdownPipe } from './pipes/total-harvest-breakdown.pipe'
     MatIconModule,
     MatSelectModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    MatButtonModule,
+    MatSliderModule
   ],
   providers: [
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: AppConfig.toolTipDefaults }
