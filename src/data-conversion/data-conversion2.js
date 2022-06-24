@@ -177,6 +177,8 @@ for (let [i, hunt] of hunts.entries()) {
     hunt.endDate = Date.parse(hunt.endDate);
   }
 
+  // TODO: deal with quota vs checkin...
+
 }
 
 if (removedCount > 0) {
