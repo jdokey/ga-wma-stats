@@ -2,7 +2,17 @@ import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from '@angular/ma
 
 export class AppConfig {
 
-  static logData: boolean = false;
+  static logData: boolean = true;
+
+  static baseEndpoint: string = 'http://localhost:5005';
+  static endpoints = {
+    HUNTS: 'hunt',
+    WMAS: 'wma',
+    SEASONS: 'season',
+    WEAPONS: 'weapon',
+    HUNT_TYPES: 'hunttype',
+    HUNTER_TYPES: 'huntertype'
+  }
 
   static toolTipDefaults: MatTooltipDefaultOptions = {
     position: 'above',
@@ -10,5 +20,7 @@ export class AppConfig {
     hideDelay: 0,
     touchendHideDelay: 0
   };
+
+
 
 }

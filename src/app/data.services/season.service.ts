@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class SeasonService {
 
-  seasons$ = this._http.get<Season[]>('api/seasons')
+  seasons$ = this._http.get<Season[]>(`${AppConfig.baseEndpoint}/${AppConfig.endpoints.SEASONS}`)
     .pipe(tap(data => AppConfig.logData ? console.log('Fetching Season[]', data) : ''));
 
   constructor(private _http: HttpClient) {}

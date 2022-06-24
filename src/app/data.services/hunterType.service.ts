@@ -7,7 +7,7 @@ import { Injectable } from "@angular/core";
 @Injectable({ providedIn: 'root' })
 export class HunterTypeService {
 
-  hunterTypes$ = this._http.get<HunterType[]>('api/hunterTypes')
+  hunterTypes$ = this._http.get<HunterType[]>(`${AppConfig.baseEndpoint}/${AppConfig.endpoints.HUNTER_TYPES}`)
     .pipe(tap(data => AppConfig.logData ? console.log('Fetching HunterType[]', data) : ''));
 
   constructor(private _http: HttpClient) {}

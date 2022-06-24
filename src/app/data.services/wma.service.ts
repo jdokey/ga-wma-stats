@@ -7,7 +7,7 @@ import { Injectable } from "@angular/core";
 @Injectable({ providedIn: 'root' })
 export class WmaService {
 
-  wmas$ = this._http.get<Wma[]>('api/wmas')
+  wmas$ = this._http.get<Wma[]>(`${AppConfig.baseEndpoint}/${AppConfig.endpoints.WMAS}`)
     .pipe(
       tap(data => AppConfig.logData ? console.log('Fetching Wma[]', data) : ''),
       map(wmas => wmas.sort((a: Wma, b: Wma) => a.name < b.name ? -1 : a.name > b.name ? 1: 0))

@@ -1,3 +1,4 @@
+import { RestService } from './../services/rest.service';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { combineLatest } from 'rxjs';
@@ -14,7 +15,7 @@ import { WmaService } from './wma.service';
 @Injectable({ providedIn: 'root' })
 export class HuntService {
 
-  hunts$ = this._http.get<Hunt[]>('api/hunts')
+  hunts$ = this._restService.get(`${AppConfig.baseEndpoint}/${AppConfig.endpoints.HUNTS}`)
     .pipe(tap(data => AppConfig.logData ? console.log('fetching Hunt[]', data) : ''));
 
   huntsWithAnxData$ = combineLatest([
@@ -53,7 +54,7 @@ export class HuntService {
   ]).pipe(
     // tap(([hunts, selectedFilters]) => console.log(selectedFilters)),
     map(([hunts, selectedFilters]) =>
-      hunts.filter((hunt) => {
+      hunts.filter((hunt: Hunt) => {
         const nonNullFilters = Object.entries(selectedFilters).filter(([key, value]) => value !== null);
         if (nonNullFilters.length > 0) {
           const filtersObj = Object.fromEntries(nonNullFilters);
@@ -85,15 +86,13 @@ export class HuntService {
   );
 
   constructor(
-    private _http: HttpClient,
+    private _restService: RestService,
     private _wmaService: WmaService,
     private _seasonService: SeasonService,
     private _weaponService: WeaponService,
     private _hunterTypeService: HunterTypeService,
     private _huntTypeService: HuntTypeService,
     private _filterService: FilterService) { }
-
-
 
   private findSubcollectionValue(object: any, property: string, array: Wma[] | Season[]): string {
     return array.find(value => object[property] === value.id)?.name || 'Unknown';

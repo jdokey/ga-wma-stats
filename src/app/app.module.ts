@@ -11,8 +11,6 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { AppData } from './app-data';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppConfig } from './app.config';
@@ -34,7 +32,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    InMemoryWebApiModule.forRoot(AppData, { delay: 1000 }),
     HttpClientModule,
     MatTableModule,
     MatTooltipModule,

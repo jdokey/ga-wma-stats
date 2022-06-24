@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class WeaponService {
 
-  weapons$ = this._http.get<Weapon[]>('api/weapons')
+  weapons$ = this._http.get<Weapon[]>(`${AppConfig.baseEndpoint}/${AppConfig.endpoints.WEAPONS}`)
     .pipe(tap(data => AppConfig.logData ? console.log('Fetching Weapon[]', data) : ''));
 
   constructor(private _http: HttpClient) {}
