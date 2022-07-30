@@ -1,4 +1,4 @@
-import { Hunt } from './../model';
+import { Hunt } from '@model';
 import HUNTDATA from './huntData.json';
 
 export class HuntData {
