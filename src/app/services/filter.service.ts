@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { HuntFilter } from "../model";
+import { HuntFilter } from "@model";
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {

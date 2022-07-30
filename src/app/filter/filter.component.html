@@ -67,6 +67,9 @@
           </div>
         </div>
       </div>
+      <div class="flex-wrap resultsCount" *ngIf="(filteredHunts$ | async)?.length">
+        {{ (filteredHunts$ | async)?.length }} Results
+      </div>
     </form>
   </mat-card-content>
 </mat-card>

@@ -1,5 +1,5 @@
 import { AppConfig } from './../app.config';
-import { Weapon } from './../model';
+import { Weapon } from '@model';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { tap } from 'rxjs/operators';

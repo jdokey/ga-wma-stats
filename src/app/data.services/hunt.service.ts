@@ -1,10 +1,9 @@
 import { RestService } from './../services/rest.service';
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { combineLatest } from 'rxjs';
-import { map, shareReplay, tap, filter } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs/operators';
 import { AppConfig } from './../app.config';
-import { Hunt, Season, Wma, HuntFilter } from './../model';
+import { Hunt, Season, Wma } from '@model';
 import { FilterService } from './../services/filter.service';
 import { HunterTypeService } from './hunterType.service';
 import { HuntTypeService } from './huntType.service';

@@ -1,6 +1,6 @@
 import { AppConfig } from './../app.config';
 import { map, tap } from 'rxjs/operators';
-import { Wma } from './../model';
+import { Wma } from '@model';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 

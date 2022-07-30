@@ -15,8 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppConfig } from './app.config';
 import { FilterComponent } from './filter/filter.component';
-import { HuntTypePipe } from './pipes/hunt-type.pipe';
-import { TotalHarvestBreakdownPipe } from './pipes/total-harvest-breakdown.pipe';
+import { HuntTypePipe, TotalHarvestBreakdownPipe} from '@pipes';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({

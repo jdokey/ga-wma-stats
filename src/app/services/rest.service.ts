@@ -1,9 +1,8 @@
 import { catchError, retry } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Season, Wma, HuntType, HunterType } from './../model';
+import { Hunt, Season, Wma, HuntType, HunterType } from '@model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Hunt } from '../model';
 
 @Injectable({
   providedIn: 'root'

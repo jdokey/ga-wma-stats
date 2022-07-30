@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Hunt } from '../model';
+import { Hunt } from '@model';
 
 @Pipe({
   name: 'totalHarvestBreakdown'

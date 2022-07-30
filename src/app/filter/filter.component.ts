@@ -1,12 +1,8 @@
-import { AppConfig } from './../app.config';
-import { WeaponService } from './../data.services/weapon.service';
-import { SeasonService } from './../data.services/season.service';
-import { FilterService } from './../services/filter.service';
-import { WmaService } from './../data.services/wma.service';
+import { HuntService, WeaponService, SeasonService, WmaService } from '@data-services';
+import { FilterService } from '@services';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder } from '@angular/forms';
-import { HuntFilter } from '../model';
-import { MatSliderChange } from '@angular/material/slider';
+import { HuntFilter } from '@model';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
@@ -20,9 +16,11 @@ export class FilterComponent implements OnInit {
   wmas$ = this._wmaService.wmas$;
   seasons$ = this._seasonService.seasons$;
   weapons$ = this._weaponService.weapons$;
+  filteredHunts$ = this._huntService.filteredHunts$;
 
   constructor(
     private _formBuilder: NonNullableFormBuilder,
+    private _huntService: HuntService,
     private _wmaService: WmaService,
     private _seasonService: SeasonService,
     private _weaponService: WeaponService,

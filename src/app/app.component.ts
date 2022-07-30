@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HuntService } from './data.services/hunt.service';
+import { HuntService } from '@data-services';
 
 @Component({
   selector: 'app-root',

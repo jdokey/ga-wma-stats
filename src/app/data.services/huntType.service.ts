@@ -1,6 +1,6 @@
 import { AppConfig } from './../app.config';
 import { tap } from 'rxjs/operators';
-import { HuntType } from './../model';
+import { HuntType } from '@model';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 
