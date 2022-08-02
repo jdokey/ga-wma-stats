@@ -17,6 +17,7 @@ import { AppConfig } from './app.config';
 import { FilterComponent } from './filter/filter.component';
 import { HuntTypePipe, TotalHarvestBreakdownPipe} from '@pipes';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatDividerModule,
     MatButtonModule,
     MatSliderModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    InfiniteScrollModule
   ],
   providers: [
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: AppConfig.toolTipDefaults }
