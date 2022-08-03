@@ -16,7 +16,7 @@ export class RestService {
   constructor(private _http: HttpClient) { }
 
   public get(url: string, paramsObj?: Object): Observable<any> {
-    let params = paramsObj ? this.buildParams(paramsObj) : {};
+    let params = paramsObj ? this.setRequestParams(paramsObj) : {};
     return this._http.get<Hunt[] | Season[] | Wma[] | HuntType[] | HunterType[]>
       (url, { headers: this.headers, params: params})
       .pipe(
@@ -27,11 +27,12 @@ export class RestService {
       );
   }
 
-  private buildParams(obj: Object): HttpParams {
-    let params = new HttpParams()
-    for (let [key, value] of Object.keys(obj)) {
+  private setRequestParams(obj: Object): HttpParams {
+    let params = new HttpParams();
+    for (let [key, value] of Object.entries(obj)) {
       params.set(key, value);
     }
+    console.log(params);
     return params;
   }
 

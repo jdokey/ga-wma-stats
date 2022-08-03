@@ -14,8 +14,11 @@ import { WmaService } from './wma.service';
 @Injectable({ providedIn: 'root' })
 export class HuntService {
 
-  hunts$ = this._restService.get(`${AppConfig.baseEndpoint}/${AppConfig.endpoints.HUNTS}`)
-    .pipe(tap(data => AppConfig.logData ? console.log('fetching Hunt[]', data) : ''));
+  hunts$ = this._restService.get(
+    `${AppConfig.baseEndpoint}/${AppConfig.endpoints.HUNTS}`, { 'limit': 100, 'skip': 0 })
+      .pipe(
+        tap(data => AppConfig.logData ? console.log('fetching Hunt[]', data) : '')
+      );
 
   huntsWithAnxData$ = combineLatest([
     this.hunts$,

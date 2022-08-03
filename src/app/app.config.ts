@@ -2,9 +2,9 @@ import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from '@angular/ma
 
 export class AppConfig {
 
-  static logData: boolean = true;
-
+  static logData: boolean = false;
   static baseEndpoint: string = 'http://localhost:5005';
+
   static endpoints = {
     HUNTS: 'hunt',
     WMAS: 'wma',
