@@ -54,31 +54,25 @@ export class HuntService {
     this.huntsWithAnxData$,
     this._filterService.selectedFilters$
   ]).pipe(
-    // tap(([hunts, selectedFilters]) => console.log(selectedFilters)),
-    map(([hunts, selectedFilters]) =>
-      hunts.filter((hunt: Hunt) => {
-        const nonNullFilters = Object.entries(selectedFilters).filter(([key, value]) => value !== null);
-        if (nonNullFilters.length > 0) {
-          const filtersObj = Object.fromEntries(nonNullFilters);
-          let expr: string = '';
-          for (const [key, value] of Object.entries(filtersObj)) {
-            if (key === 'successRate') {
-              expr += `hunt['${key}'] >= ${value} && `;
-            } else if (key === 'isCheckIn') {
-              expr += value ? `hunt['${key}'] == true && ` : ``;
-            } else if (key === 'quota') {
-              expr += value ? `hunt['${key}'] > 0 &&` : ``
-            } else {
-              expr += `hunt['${key}'] === ${value} && `;
-            }
-          }
-          // console.log(expr);
-          return eval(expr.substring(0, expr.length - 3));
+    map(([hunts, selectedFilters]) => {
+      const nonNullFilters = Object.entries(selectedFilters).filter(([key, value]) => value !== null);
+      if (nonNullFilters.length === 0) {
+        return hunts;
+      }
+      const filterFnBody = nonNullFilters.map(([key, value]) => {
+        if (key === 'successRate') {
+          return `return hunt['${key}'] >= ${value};`;
+        } else if (key === 'isCheckIn') {
+          return `return ${value} ? hunt['${key}'] === true : true;`;
+        } else if (key === 'quota') {
+          return `return ${value} ? hunt['${key}'] > 0 : true;`;
         } else {
-          return true;
+          return `return hunt['${key}'] === ${value};`;
         }
-      })
-    ),
+      }).join('\n');
+      const filterFn = new Function('hunt', filterFnBody);
+      return hunts.filter((hunt: any) => filterFn(hunt));
+    }),
     // Set isNotFirstWmaEntry property. This indicates when/when not to render the wma name field in the "WMA" column ...
     map(hunts => hunts.map((hunt: { wma: any; }, index: number, array: { wma: any; }[]) => ({
       ...hunt,
@@ -86,6 +80,7 @@ export class HuntService {
     }) as Hunt)),
     tap(data => console.log('filteredHunts$ length:', data.length))
   );
+
 
   constructor(
     private _restService: RestService,
