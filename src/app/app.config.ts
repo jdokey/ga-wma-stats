@@ -21,6 +21,4 @@ export class AppConfig {
     touchendHideDelay: 0
   };
 
-
-
 }

@@ -16,9 +16,9 @@ export class HuntService {
 
   hunts$ = this._restService.get(
     `${AppConfig.baseEndpoint}/${AppConfig.endpoints.HUNTS}`, { 'limit': 100, 'skip': 0 })
-      .pipe(
-        tap(data => AppConfig.logData ? console.log('fetching Hunt[]', data) : '')
-      );
+    .pipe(
+      tap(data => AppConfig.logData ? console.log('fetching Hunt[]', data) : '')
+    );
 
   huntsWithAnxData$ = combineLatest([
     this.hunts$,
@@ -64,10 +64,10 @@ export class HuntService {
           for (const [key, value] of Object.entries(filtersObj)) {
             if (key === 'successRate') {
               expr += `hunt['${key}'] >= ${value} && `;
-            } else if (key === 'quota' || key === 'isCheckIn') {
-              if (value) {
-                expr += `hunt['${key}'] == true && `;
-              }
+            } else if (key === 'isCheckIn') {
+              expr += value ? `hunt['${key}'] == true && ` : ``;
+            } else if (key === 'quota') {
+              expr += value ? `hunt['${key}'] > 0 &&` : ``
             } else {
               expr += `hunt['${key}'] === ${value} && `;
             }
