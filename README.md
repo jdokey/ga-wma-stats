@@ -1,4 +1,4 @@
-# Georgia WMA Hunt Statistics
+# Georgia WMA Hunt Statistics (ARCHIVED)
 
 Search tool for historical GA WMA hunt data.
 
